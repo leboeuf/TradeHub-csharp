@@ -9,32 +9,16 @@ namespace TradeHub.Backtesting.Framework
     public class Backtest
     {
         /// <summary>
-        /// Current backtesting loop iteration index (i.e. the index of the day we currently are at in the simulation).
+        /// The context data for this backtest.
         /// </summary>
-        private int currentIteration;
-
-        /// <summary>
-        /// The list of transactions declared before running the simulation.
-        /// These trades will be executed when their target date is reached in the simulation.
-        /// </summary>
-        private List<TradeOrder> inputTransactions;
-
-        /// <summary>
-        /// The historical price list on which the simulation is based.
-        /// </summary>
-        public List<StockTick> StockData;
-
-        public Backtest()
-        {
-            this.inputTransactions = new List<TradeOrder>();
-        }
+        private BacktestingContext context = new BacktestingContext();
 
         /// <summary>
         /// Saves a trade order to be executed at a certain date in the simulation.
         /// </summary>
         public void PlaceTradeOrder(TradeOrderAction action, string symbol, DateTime timestamp, decimal price, int quantity)
         {
-            inputTransactions.Add(new TradeOrder
+            context.InputTransactions.Add(new TradeOrder
             {
                 Action = action,
                 Symbol = symbol,
@@ -47,15 +31,18 @@ namespace TradeHub.Backtesting.Framework
         /// <summary>
         /// Run the simulation.
         /// </summary>
+        /// <remarks>
+        /// The "current" word in variables names refers to the current iteration step in the simulation.
+        /// </remarks>
         public void Run()
         {
-            for (currentIteration = 0; currentIteration < StockData.Count(); ++currentIteration)
+            for (context.CurrentIteration = 0; context.CurrentIteration < context.StockData.Count(); ++context.CurrentIteration)
             {
-                var currentStockTick = StockData[currentIteration];
+                var currentStockTick = context.StockData[context.CurrentIteration];
 
                 // Check if there is any transaction pending
                 var currentDate = currentStockTick.Timestamp.Date;
-                var transactionsForCurrentDate = inputTransactions.Where(t => t.Timestamp.Date == currentDate).ToList();
+                var transactionsForCurrentDate = context.InputTransactions.Where(t => t.Timestamp.Date == currentDate).ToList();
                 if (transactionsForCurrentDate.Any())
                 {
                     ExecuteTradeOrders(transactionsForCurrentDate);
