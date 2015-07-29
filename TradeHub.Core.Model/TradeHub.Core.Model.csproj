@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\HistoricalFrequency.cs" />
+    <Compile Include="Portfolio.cs" />
+    <Compile Include="Position.cs" />
+    <Compile Include="Enums\PositionType.cs" />
     <Compile Include="StockTick.cs" />
     <Compile Include="TradeOrder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

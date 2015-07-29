@@ -11,7 +11,7 @@ namespace TradeHub.Backtesting.Framework
         /// <summary>
         /// Current backtesting loop iteration index (i.e. the index of the day we currently are at in the simulation).
         /// </summary>
-        public int CurrentIteration;
+        public int CurrentIteration { get; set; }
 
         /// <summary>
         /// The historical price list on which the simulation is based.

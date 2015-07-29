@@ -33,6 +33,5 @@ namespace TradeHub.Core.Model
         /// Null if market order
         /// </summary>
         public decimal? LimitPrice { get; set; }
-        
     }
 }

@@ -14,7 +14,16 @@ namespace TradeHub.Backtesting.Framework
         private BacktestingContext context = new BacktestingContext();
 
         /// <summary>
-        /// Saves a trade order to be executed at a certain date in the simulation.
+        /// Set the stock data that will be used for the backtest.
+        /// </summary>
+        /// <param name="StockData"></param>
+        public void SetStockData(List<StockTick> StockData)
+        {
+            context.StockData = StockData;
+        }
+
+        /// <summary>
+        /// Save a trade order to be executed at a certain date in the simulation.
         /// </summary>
         public void PlaceTradeOrder(TradeOrderAction action, string symbol, DateTime timestamp, decimal price, int quantity)
         {

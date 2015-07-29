@@ -17,7 +17,7 @@ namespace TradeHub.Backtesting.ConsoleClient
         static async Task MainAsync(string[] args)
         {
             var backtest = new Backtest();
-            backtest.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData("YHOO", new DateTime(2005, 01, 03), DateTime.Now);
+            backtest.SetStockData(await YahooHistoricalDataProvider.DownloadHistoricalData("YHOO", new DateTime(2005, 01, 03), DateTime.Now));
 
             backtest.PlaceTradeOrder(TradeOrderAction.Buy, "YHOO", new DateTime(2005, 01, 03), (decimal)38.18, 100);
 
