@@ -23,5 +23,7 @@ namespace TradeHub.Backtesting.Framework
         /// These trades will be executed when their target date is reached in the simulation.
         /// </summary>
         public List<TradeOrder> InputTransactions = new List<TradeOrder>();
+
+        public Portfolio Portfolio { get; set; }
     }
 }

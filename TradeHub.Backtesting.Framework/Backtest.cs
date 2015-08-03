@@ -20,6 +20,10 @@ namespace TradeHub.Backtesting.Framework
         public void SetStockData(List<StockTick> StockData)
         {
             context.StockData = StockData;
+            context.Portfolio = new Portfolio
+            {
+                CashBalance = 100000
+            };
         }
 
         /// <summary>
@@ -71,7 +75,7 @@ namespace TradeHub.Backtesting.Framework
 
         private void ExecuteTradeOrder(TradeOrder tradeOrder)
         {
-            throw new NotImplementedException();
+            BacktestingPortfolioManager.ExecuteTradeOrder(tradeOrder, context.Portfolio);
         }
     }
 }
