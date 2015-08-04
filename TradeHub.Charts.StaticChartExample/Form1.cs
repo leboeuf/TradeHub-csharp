@@ -18,8 +18,7 @@ namespace TradeHub.Charts.StaticChartExample
             chart.BackgroundColor = Brushes.Beige;
 
             this.BackgroundImage = chart.Draw();
-            this.Width = chart.Width;
-            this.Height = chart.Height;
+            this.ClientSize = new Size(chart.Width, chart.Height);
         }
     }
 }

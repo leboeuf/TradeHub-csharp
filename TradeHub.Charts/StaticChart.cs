@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -39,6 +40,15 @@ namespace TradeHub.Charts
         #endregion
 
         #region Border
+        /// <summary>
+        /// The border color surrounding each module. Set to null for no border.
+        /// </summary>
+        public Pen ModulesBorderColor = Pens.Black;
+
+        /// <summary>
+        /// The border width for each module border.
+        /// </summary>
+        public int ModulesBorderWidth = 1;
         #endregion
 
         #region Modules
@@ -52,7 +62,7 @@ namespace TradeHub.Charts
         {
             Modules = new List<StaticChartModule>
             {
-                new StaticChartModule()
+                new StaticChartModule(this)
             };
         }
 
@@ -69,7 +79,7 @@ namespace TradeHub.Charts
 
             foreach (var module in Modules)
             {
-                module.Draw(g, Width);
+                module.Draw(g);
             }
 
             return bitmap;
@@ -81,6 +91,27 @@ namespace TradeHub.Charts
             {
                 g.FillRectangle(BackgroundColor, g.ClipBounds);
             }
+        }
+
+        /// <summary>
+        /// Returns the X and Y coordinates of the top-left corner of the given module.
+        /// </summary>
+        internal Point GetModulePosition(StaticChartModule staticChartModule)
+        {
+            // Add modules heights until we find the given module.
+            var height = 0;
+
+            foreach (var module in Modules)
+            {
+                if (module == staticChartModule)
+                {
+                    return new Point(0, height);
+                }
+
+                height += module.Height;
+            }
+
+            throw new Exception("StaticChartModule not found inside of StaticChart. The given StaticChartModule is not a children of the current StaticChart instance.");
         }
     }
 }
