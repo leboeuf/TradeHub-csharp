@@ -44,6 +44,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StaticChartModule.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TradeHub.Core.Model\TradeHub.Core.Model.csproj">
+      <Project>{1ca72d28-d75e-4a97-ad89-ff34fed88b64}</Project>
+      <Name>TradeHub.Core.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

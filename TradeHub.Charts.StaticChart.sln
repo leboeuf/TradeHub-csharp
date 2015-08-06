@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Charts", "TradeHub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Charts.StaticChartExample", "TradeHub.Charts.StaticChartExample\TradeHub.Charts.StaticChartExample.csproj", "{9903E380-4575-445A-984A-890BD181D42A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Core.Model", "TradeHub.Core.Model\TradeHub.Core.Model.csproj", "{1CA72D28-D75E-4A97-AD89-FF34FED88B64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Core.DataProviders", "TradeHub.Core.DataProviders\TradeHub.Core.DataProviders.csproj", "{47757D91-06E1-4E37-9B57-2BCFCC2A9F7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{9903E380-4575-445A-984A-890BD181D42A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9903E380-4575-445A-984A-890BD181D42A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9903E380-4575-445A-984A-890BD181D42A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CA72D28-D75E-4A97-AD89-FF34FED88B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CA72D28-D75E-4A97-AD89-FF34FED88B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CA72D28-D75E-4A97-AD89-FF34FED88B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CA72D28-D75E-4A97-AD89-FF34FED88B64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47757D91-06E1-4E37-9B57-2BCFCC2A9F7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47757D91-06E1-4E37-9B57-2BCFCC2A9F7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47757D91-06E1-4E37-9B57-2BCFCC2A9F7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47757D91-06E1-4E37-9B57-2BCFCC2A9F7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -82,6 +82,14 @@
       <Project>{9274872c-bee4-44f8-83f2-4d31e2bffed8}</Project>
       <Name>TradeHub.Charts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TradeHub.Core.DataProviders\TradeHub.Core.DataProviders.csproj">
+      <Project>{47757d91-06e1-4e37-9b57-2bcfcc2a9f7c}</Project>
+      <Name>TradeHub.Core.DataProviders</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHub.Core.Model\TradeHub.Core.Model.csproj">
+      <Project>{1ca72d28-d75e-4a97-ad89-ff34fed88b64}</Project>
+      <Name>TradeHub.Core.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using TradeHub.Core.Model;
 
 namespace TradeHub.Charts
 {
@@ -11,11 +12,17 @@ namespace TradeHub.Charts
     public class StaticChart
     {
         private const int DEFAULT_WIDTH = 640;
+        private const int SPACE_BETWEEN_CHART_MODULES = 2;
 
         /// <summary>
         /// The Bitmap object to draw to.
         /// </summary>
         private Bitmap bitmap { get; set; }
+
+        /// <summary>
+        /// The stock data to plot on the chart.
+        /// </summary>
+        public List<StockTick> StockData { get; set; }
 
         #region Dimensions
         /// <summary>
@@ -26,17 +33,20 @@ namespace TradeHub.Charts
         /// <summary>
         /// The calculated height of the chart. This can't be set manually because the height depends on the components on the chart.
         /// </summary>
-        public int Height {
-            get { return Modules.Sum(module => module.Height); }
-            private set {  }
+        public int Height
+        {
+            // The "- SPACE_BETWEEN_CHART_MODULES" is because the first module doesn't have a top margin.
+            get { return Modules.Sum(module => (module.Height + SPACE_BETWEEN_CHART_MODULES)) - SPACE_BETWEEN_CHART_MODULES; }
+            private set { }
         }
         #endregion
 
         #region Background
+
         /// <summary>
-        /// The background color of the chart. Set to null for transparent.
+        /// The background color of the chart.
         /// </summary>
-        public Brush BackgroundColor { get; set; }
+        public Color BackgroundColor = Color.Transparent;
         #endregion
 
         #region Border
@@ -62,6 +72,7 @@ namespace TradeHub.Charts
         {
             Modules = new List<StaticChartModule>
             {
+                new StaticChartModule(this),
                 new StaticChartModule(this)
             };
         }
@@ -69,49 +80,42 @@ namespace TradeHub.Charts
         /// <summary>
         /// Draws the chart to a Bitmap.
         /// </summary>
-        /// <returns></returns>
         public Bitmap Draw()
         {
             bitmap = new Bitmap(Width, Height);
             var g = Graphics.FromImage(bitmap);
+            g.SetClip(new Rectangle(0, 0, Width, Height));
+            g.Clear(BackgroundColor);
 
-            DrawChartBackground(g);
-
+            // Keep track of the height of modules to set each one's drawing area.
+            var drawingArea = new Rectangle();
             foreach (var module in Modules)
             {
+                drawingArea = GetModuleDrawingArea(module.Height, drawingArea);
+                g.SetClip(drawingArea);
                 module.Draw(g);
             }
 
             return bitmap;
         }
 
-        private void DrawChartBackground(Graphics g)
-        {
-            if (BackgroundColor != null)
-            {
-                g.FillRectangle(BackgroundColor, g.ClipBounds);
-            }
-        }
-
         /// <summary>
-        /// Returns the X and Y coordinates of the top-left corner of the given module.
+        /// Calculates the rectangle to which the drawing surface will be clipped.
         /// </summary>
-        internal Point GetModulePosition(StaticChartModule staticChartModule)
+        /// <param name="moduleHeight">The height of the module that will be drawn.</param>
+        /// <param name="previousDrawingArea">Rectangle of the previously drawn area. Used to know the position of the next module.</param>
+        /// <returns>The position and dimensions where the module will be drawn.</returns>
+        /// <remarks>The previousDrawingArea Rectangle is used in order to not create a new Rectangle object for each module every time the chart is drawn.</remarks>
+        private Rectangle GetModuleDrawingArea(int moduleHeight, Rectangle previousDrawingArea)
         {
-            // Add modules heights until we find the given module.
-            var height = 0;
+            var topMargin = previousDrawingArea.Bottom != 0 ? SPACE_BETWEEN_CHART_MODULES : 0; // Add top margin except for the first module
 
-            foreach (var module in Modules)
-            {
-                if (module == staticChartModule)
-                {
-                    return new Point(0, height);
-                }
-
-                height += module.Height;
-            }
-
-            throw new Exception("StaticChartModule not found inside of StaticChart. The given StaticChartModule is not a children of the current StaticChart instance.");
+            var previousModuleBottom = previousDrawingArea.Bottom;
+            previousDrawingArea.X = 0;
+            previousDrawingArea.Y = previousModuleBottom + topMargin;
+            previousDrawingArea.Height = moduleHeight;
+            previousDrawingArea.Width = Width;
+            return previousDrawingArea;
         }
     }
 }
