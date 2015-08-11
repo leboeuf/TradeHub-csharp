@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using TradeHub.Charts.GDI;
 
 namespace TradeHub.Charts
 {
@@ -66,7 +67,7 @@ namespace TradeHub.Charts
                 return;
             }
 
-            g.DrawRectangle(parent.ModulesBorderColor, g.ClipBounds.X, g.ClipBounds.Y, g.ClipBounds.Width - 1, g.ClipBounds.Y + Height - 1);
+            DrawingHelper.DrawRectangle(g, parent.ModulesBorderColor, g.ClipBounds.X, g.ClipBounds.Y, g.ClipBounds.Width - 1, g.ClipBounds.Y + Height - 1);
         }
 
         private void DrawXAxis(Graphics g)
@@ -74,13 +75,13 @@ namespace TradeHub.Charts
             var axisY = g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - parent.ModulesBorderWidth;
             var axisLeftX = g.ClipBounds.X + parent.ModulesBorderWidth;
             var axisRightX = g.ClipBounds.X + g.ClipBounds.Width - parent.ModulesBorderWidth;
-            g.DrawLine(Pens.BlueViolet, axisLeftX, axisY, axisRightX, axisY);
+            DrawingHelper.DrawLine(g, Pens.BlueViolet, axisLeftX, axisY, axisRightX, axisY);
 
             // Draw divisions on the axis
             for (int i = 0; i < parent.StockData.Count; ++i)
             {
                 var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
-                g.DrawLine(Pens.BlueViolet, x, axisY - BOTTOM_LEGEND_DASH_LENGTH / 2, x, axisY + BOTTOM_LEGEND_DASH_LENGTH / 2);
+                DrawingHelper.DrawLine(g, Pens.BlueViolet, x, axisY - BOTTOM_LEGEND_DASH_LENGTH / 2, x, axisY + BOTTOM_LEGEND_DASH_LENGTH / 2);
             }
         }
 
@@ -89,7 +90,7 @@ namespace TradeHub.Charts
             var axisX = g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - parent.ModulesBorderWidth;
             var axisTopY = g.ClipBounds.Y + parent.ModulesBorderWidth;
             var axisBottomY = g.ClipBounds.Y + Height - parent.ModulesBorderWidth - BOTTOM_LEGEND_WIDTH;
-            g.DrawLine(Pens.Purple, axisX, axisTopY, axisX, axisBottomY);
+            DrawingHelper.DrawLine(g, Pens.Purple, axisX, axisTopY, axisX, axisBottomY);
 
             var max = parent.StockData.Max(s => s.High);
             var min = parent.StockData.Min(s => s.Low);
@@ -105,14 +106,14 @@ namespace TradeHub.Charts
             {
                 // Draw dash
                 var y = WorldToScreen(currentPrice, plotAreaTop, plotAreaBottom);
-                g.DrawLine(Pens.BlueViolet, axisX - RIGHT_LEGEND_DASH_LENGTH, y, axisX + RIGHT_LEGEND_DASH_LENGTH, y);
+                DrawingHelper.DrawLine(g, Pens.BlueViolet, axisX - RIGHT_LEGEND_DASH_LENGTH, y, axisX + RIGHT_LEGEND_DASH_LENGTH, y);
 
                 // Draw label
                 var f = new Font("Arial", 14, FontStyle.Regular, GraphicsUnit.World);
                 var label = String.Format("{0:C}", currentPrice);
                 var strSize = g.MeasureString(label, f);
                 var msgPos = new PointF(axisX + SPACE_BETWEEN_RIGHT_LEGEND_AND_LABEL, y - strSize.Height / 2 + 1);
-                g.DrawString(label, f, Brushes.Red, msgPos);
+                DrawingHelper.DrawString(g, label, f, Brushes.Red, msgPos);
 
                 currentPrice -= priceSteps;
             }
@@ -135,7 +136,7 @@ namespace TradeHub.Charts
                 var yPosClose = WorldToScreen(tick.Close, plotAreaTop, plotAreaBottom);
 
                 var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
-                g.DrawLine(Pens.Black, x, yPosHigh, x, yPosLow);
+                DrawingHelper.DrawLine(g, Pens.Black, x, yPosHigh, x, yPosLow);
             }
         }
 
@@ -168,7 +169,7 @@ namespace TradeHub.Charts
             var f = new Font("Arial", 14, FontStyle.Regular, GraphicsUnit.World);
             var strSize = g.MeasureString(message, f);
             var msgPos = new PointF(g.ClipBounds.Width / 2 - strSize.Width / 2, g.ClipBounds.Height / 2 - strSize.Height / 2);
-            g.DrawString(message, f, Brushes.Red, msgPos);
+            DrawingHelper.DrawString(g, message, f, Brushes.Red, msgPos);
         }
 
         /// <summary>

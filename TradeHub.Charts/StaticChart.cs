@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using TradeHub.Charts.GDI;
 using TradeHub.Core.Model;
 
 namespace TradeHub.Charts
@@ -83,6 +84,7 @@ namespace TradeHub.Charts
         public Bitmap Draw()
         {
             bitmap = new Bitmap(Width, Height);
+            DrawingHelper.BitmapToDebug = bitmap;
             var g = Graphics.FromImage(bitmap);
             g.SetClip(new Rectangle(0, 0, Width, Height));
             g.Clear(BackgroundColor);
