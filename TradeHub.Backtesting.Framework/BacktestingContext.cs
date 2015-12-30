@@ -14,7 +14,7 @@ namespace TradeHub.Backtesting.Framework
         public int CurrentIteration { get; set; }
 
         /// <summary>
-        /// The historical price list on which the simulation is based.
+        /// The historical data on which the simulation is based.
         /// </summary>
         public List<StockTick> StockData = new List<StockTick>();
 

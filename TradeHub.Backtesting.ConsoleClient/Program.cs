@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using TradeHub.Backtesting.ConsoleClient.Strategies;
 using TradeHub.Backtesting.Framework;
 using TradeHub.Core.DataProviders;
 using TradeHub.Core.Model;
@@ -21,7 +22,11 @@ namespace TradeHub.Backtesting.ConsoleClient
             WriteTitle();
             WriteInfo("Setting up backtest...");
 
-            var backtest = new Backtest();
+            var backtest = new Backtest
+            {
+                Strategy = new DailyMomentumStrategy()
+            };
+
             var portfolio = new Portfolio
             {
                 CashBalance = 100000
@@ -73,6 +78,12 @@ namespace TradeHub.Backtesting.ConsoleClient
             Console.WriteLine(" Portfolio positions: {0}", backtest.Context.Portfolio.Positions.Count);
             Console.WriteLine(" Days of historical data: {0}", backtest.Context.StockData.Count);
             Console.WriteLine(" Reference timeframe: {0} to {1}", backtest.Context.StockData[0].Timestamp.ToShortDateString(), backtest.Context.StockData[backtest.Context.StockData.Count - 1].Timestamp.ToShortDateString());
+
+            Console.Write(" Strategy: ");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.Write("{0}{1}", backtest.Strategy.Name, Environment.NewLine);
+            Console.ForegroundColor = ConsoleColor.White;
+
             Console.WriteLine();
         }
 
