@@ -8,23 +8,23 @@ namespace TradeHub.Backtesting.Framework.Tests
     [TestClass]
     public class BacktestingPortfolioManagerTests
     {
-        const decimal initialCashBalance = 100000;
-        const decimal testCommission = 15;
-        const string testSymbol = "GOOG";
+        const decimal InitialCashBalance = 100000;
+        const decimal TestCommission = 15;
+        const string TestSymbol = "GOOG";
 
         [TestMethod]
         public void ExecuteTradeOrder_ValidBuyOrderWithoutCommission_ReturnsTrue()
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             var validBuyOrder = new TradeOrder
             {
                 Action = TradeOrderAction.Buy,
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
@@ -37,34 +37,34 @@ namespace TradeHub.Backtesting.Framework.Tests
             Assert.AreEqual(portfolio.Positions.Count, 1);
 
             // Test that cash balance has been updated
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance - (validBuyOrder.Quantity * validBuyOrder.LimitPrice));
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance - (validBuyOrder.Quantity * validBuyOrder.LimitPrice));
         }
 
         public void ExecuteTradeOrder_ValidBuyOrderWithCommission_ReturnsTrue()
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             var validBuyOrder = new TradeOrder
             {
                 Action = TradeOrderAction.Buy,
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
 
             // Test that the order is valid
-            var result = BacktestingPortfolioManager.ExecuteTradeOrder(validBuyOrder, portfolio, testCommission);
+            var result = BacktestingPortfolioManager.ExecuteTradeOrder(validBuyOrder, portfolio, TestCommission);
             Assert.IsTrue(result);
 
             // Test that the portfolio now contains a position
             Assert.AreEqual(portfolio.Positions.Count, 1);
 
             // Test that cash balance has been updated
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance - (validBuyOrder.Quantity * validBuyOrder.LimitPrice) - testCommission);
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance - (validBuyOrder.Quantity * validBuyOrder.LimitPrice) - TestCommission);
         }
 
         [TestMethod]
@@ -72,14 +72,14 @@ namespace TradeHub.Backtesting.Framework.Tests
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             var invalidBuyOrderNotEnoughFunds = new TradeOrder
             {
                 Action = TradeOrderAction.Buy,
                 Quantity = 9999999,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
@@ -90,7 +90,7 @@ namespace TradeHub.Backtesting.Framework.Tests
 
             // Test that the portfolio has not been modified
             Assert.AreEqual(portfolio.Positions.Count, 0);
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance);
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance);
         }
 
         [TestMethod]
@@ -98,14 +98,14 @@ namespace TradeHub.Backtesting.Framework.Tests
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             var invalidBuyOrderNoLimitPrice = new TradeOrder
             {
                 Action = TradeOrderAction.Buy,
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 Timestamp = DateTime.Now
             };
 
@@ -115,7 +115,7 @@ namespace TradeHub.Backtesting.Framework.Tests
 
             // Test that the portfolio has not been modified
             Assert.AreEqual(portfolio.Positions.Count, 0);
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance);
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance);
         }
 
         [TestMethod]
@@ -123,13 +123,13 @@ namespace TradeHub.Backtesting.Framework.Tests
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             portfolio.Positions.Add(new Position
             {
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 PositionType = PositionType.Long,
                 AveragePrice = 500
             });
@@ -138,7 +138,7 @@ namespace TradeHub.Backtesting.Framework.Tests
             {
                 Action = TradeOrderAction.Sell,
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
@@ -151,7 +151,7 @@ namespace TradeHub.Backtesting.Framework.Tests
             Assert.AreEqual(portfolio.Positions.Count, 0);
 
             // Test that cash balance has been updated
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance + (validFullSellOrder.Quantity * validFullSellOrder.LimitPrice));
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance + (validFullSellOrder.Quantity * validFullSellOrder.LimitPrice));
         }
 
         [TestMethod]
@@ -159,13 +159,13 @@ namespace TradeHub.Backtesting.Framework.Tests
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             portfolio.Positions.Add(new Position
             {
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 PositionType = PositionType.Long,
                 AveragePrice = 500
             });
@@ -174,20 +174,20 @@ namespace TradeHub.Backtesting.Framework.Tests
             {
                 Action = TradeOrderAction.Sell,
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
 
             // Test that the order is valid
-            var result = BacktestingPortfolioManager.ExecuteTradeOrder(validFullSellOrder, portfolio, testCommission);
+            var result = BacktestingPortfolioManager.ExecuteTradeOrder(validFullSellOrder, portfolio, TestCommission);
             Assert.IsTrue(result);
 
             // Test that the position is not in the portfolio anymore
             Assert.AreEqual(portfolio.Positions.Count, 0);
 
             // Test that cash balance has been updated
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance + (validFullSellOrder.Quantity * validFullSellOrder.LimitPrice) - testCommission);
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance + (validFullSellOrder.Quantity * validFullSellOrder.LimitPrice) - TestCommission);
         }
 
         [TestMethod]
@@ -195,13 +195,13 @@ namespace TradeHub.Backtesting.Framework.Tests
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             portfolio.Positions.Add(new Position
             {
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 PositionType = PositionType.Long,
                 AveragePrice = 500
             });
@@ -210,7 +210,7 @@ namespace TradeHub.Backtesting.Framework.Tests
             {
                 Action = TradeOrderAction.Sell,
                 Quantity = 50,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
@@ -223,7 +223,7 @@ namespace TradeHub.Backtesting.Framework.Tests
             Assert.AreEqual(portfolio.Positions[0].Quantity, 50);
 
             // Test that the cash balance has been updated
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance + (validPartialSellOrder.Quantity * validPartialSellOrder.LimitPrice));
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance + (validPartialSellOrder.Quantity * validPartialSellOrder.LimitPrice));
         }
 
         [TestMethod]
@@ -231,13 +231,13 @@ namespace TradeHub.Backtesting.Framework.Tests
         {
             var portfolio = new Portfolio
             {
-                CashBalance = initialCashBalance
+                CashBalance = InitialCashBalance
             };
 
             portfolio.Positions.Add(new Position
             {
                 Quantity = 100,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 PositionType = PositionType.Long,
                 AveragePrice = 500
             });
@@ -246,7 +246,7 @@ namespace TradeHub.Backtesting.Framework.Tests
             {
                 Action = TradeOrderAction.Sell,
                 Quantity = 101,
-                Symbol = testSymbol,
+                Symbol = TestSymbol,
                 LimitPrice = 500,
                 Timestamp = DateTime.Now
             };
@@ -257,7 +257,7 @@ namespace TradeHub.Backtesting.Framework.Tests
 
             // Test that the portfolio has not been modified
             Assert.AreEqual(portfolio.Positions.Count, 1);
-            Assert.AreEqual(portfolio.CashBalance, initialCashBalance);
+            Assert.AreEqual(portfolio.CashBalance, InitialCashBalance);
         }
     }
 }
