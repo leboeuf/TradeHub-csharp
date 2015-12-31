@@ -42,6 +42,7 @@
     <Compile Include="Backtest.cs" />
     <Compile Include="BacktestingContext.cs" />
     <Compile Include="BacktestingPortfolioManager.cs" />
+    <Compile Include="Interfaces\IBacktestingStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TradeHub.Backtesting.Framework.Interfaces;
 using TradeHub.Core.Model;
 using TradeHub.Core.Model.Enums;
-using TradeHub.Core.Model.Interfaces;
 
 namespace TradeHub.Backtesting.Framework
 {
@@ -17,7 +17,7 @@ namespace TradeHub.Backtesting.Framework
         /// <summary>
         /// The strategy to run at each step of the simulation.
         /// </summary>
-        public IStrategy Strategy;
+        public IBacktestingStrategy BacktestingStrategy;
 
         /// <summary>
         /// Save a trade order to be executed at a certain date in the simulation.
@@ -54,7 +54,7 @@ namespace TradeHub.Backtesting.Framework
                     ExecuteTradeOrders(transactionsForCurrentDate);
                 }
                 
-                Strategy?.Run(Context.StockData, currentStockTick, Context.CurrentIteration);
+                BacktestingStrategy?.Run(Context);
             }
         }
 

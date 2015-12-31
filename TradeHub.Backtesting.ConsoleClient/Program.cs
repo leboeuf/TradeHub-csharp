@@ -24,7 +24,7 @@ namespace TradeHub.Backtesting.ConsoleClient
 
             var backtest = new Backtest
             {
-                Strategy = new DailyMomentumStrategy()
+                BacktestingStrategy = new DailyMomentumBacktestingStrategy()
             };
 
             var portfolio = new Portfolio
@@ -81,7 +81,7 @@ namespace TradeHub.Backtesting.ConsoleClient
 
             Console.Write(" Strategy: ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.Write("{0}{1}", backtest.Strategy.Name, Environment.NewLine);
+            Console.Write("{0}{1}", backtest.BacktestingStrategy.Name, Environment.NewLine);
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.WriteLine();

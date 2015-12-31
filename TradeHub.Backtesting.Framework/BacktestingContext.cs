@@ -9,6 +9,11 @@ namespace TradeHub.Backtesting.Framework
     public class BacktestingContext
     {
         /// <summary>
+        /// The symbol under test.
+        /// </summary>
+        public string  Symbol { get; set; }
+
+        /// <summary>
         /// Current backtesting loop iteration index (i.e. the index of the day we currently are at in the simulation).
         /// </summary>
         public int CurrentIteration { get; set; }
