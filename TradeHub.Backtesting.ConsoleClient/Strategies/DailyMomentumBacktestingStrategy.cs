@@ -41,7 +41,7 @@ namespace TradeHub.Backtesting.ConsoleClient.Strategies
                     Action = TradeOrderAction.Buy,
                     LimitPrice = currentStockTick.Close,
                     Quantity = 1000,
-                    Timestamp = DateTime.Now
+                    Timestamp = currentStockTick.Timestamp
                 }, context.Portfolio);
             }
 
@@ -62,7 +62,7 @@ namespace TradeHub.Backtesting.ConsoleClient.Strategies
                     Action = TradeOrderAction.Sell,
                     LimitPrice = currentStockTick.Close,
                     Quantity = 1000,
-                    Timestamp = DateTime.Now
+                    Timestamp = currentStockTick.Timestamp
                 }, context.Portfolio);
             }
         }

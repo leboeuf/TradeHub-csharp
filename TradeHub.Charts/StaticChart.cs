@@ -22,9 +22,19 @@ namespace TradeHub.Charts
         private Bitmap bitmap { get; set; }
 
         /// <summary>
+        /// The symbol of the asset on this chart.
+        /// </summary>
+        public string Symbol { get; set; }
+
+        /// <summary>
         /// The stock data to plot on the chart.
         /// </summary>
         public List<StockTick> StockData { get; set; }
+
+        /// <summary>
+        /// A transaction history on the financial instrument for which the chart is drawn. If set, the trade orders will appear on the chart.
+        /// </summary>
+        public List<TradeOrder> TransactionHistory { get; set; }
 
         #region Dimensions
         /// <summary>
@@ -67,6 +77,7 @@ namespace TradeHub.Charts
         /// List of the chart modules (components) composing this chart.
         /// </summary>
         public List<IStaticChartModule> Modules { get; set; }
+
         #endregion
 
         public StaticChart()

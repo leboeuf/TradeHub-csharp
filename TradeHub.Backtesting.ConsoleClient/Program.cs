@@ -38,10 +38,10 @@ namespace TradeHub.Backtesting.ConsoleClient
             backtest.Context.Portfolio = portfolio;
 
             WriteInfo("Downloading historical data...");
-            backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData("YHOO", new DateTime(2015, 01, 02), DateTime.Now);
+            backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData("YHOO", new DateTime(2015, 09, 02), DateTime.Now);
 
             WriteInfo("Placing input trade orders...");
-            backtest.PlaceTradeOrder(TradeOrderAction.Buy, "YHOO", new DateTime(2015, 01, 02), 38.18m, 1000);
+            backtest.PlaceTradeOrder(TradeOrderAction.Buy, "YHOO", new DateTime(2015, 09, 02), 38.18m, 1000);
 
             WriteInfo("Backtest setup done.");
             WriteBacktestSetup(backtest);
@@ -118,7 +118,9 @@ namespace TradeHub.Backtesting.ConsoleClient
             {
                 Width = 640,
                 BackgroundColor = Color.Beige,
-                StockData = backtest.Context.StockData
+                Symbol = backtest.Context.Symbol,
+                StockData = backtest.Context.StockData,
+                TransactionHistory = backtest.Context.Portfolio.TransactionHistory
             };
 
             var bitmap = chart.Draw();

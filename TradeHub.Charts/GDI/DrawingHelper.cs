@@ -35,6 +35,18 @@ namespace TradeHub.Charts.GDI
             DebugGraphics();
         }
 
+        public static void DrawEllipse(Graphics g, Pen pen, float x, float y, float width, float height)
+        {
+            g.DrawEllipse(pen, x, y, width, height);
+            DebugGraphics();
+        }
+
+        public static void FillEllipse(Graphics g, Brush brush, float x, float y, float width, float height)
+        {
+            g.FillEllipse(brush, x, y, width, height);
+            DebugGraphics();
+        }
+
         public static void DrawString(Graphics g, string label, Font f, Brush brush, PointF point)
         {
             g.DrawString(label, f, brush, point);

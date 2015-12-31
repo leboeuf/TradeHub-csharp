@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Linq;
 using TradeHub.Charts.GDI;
+using TradeHub.Core.Model;
+using TradeHub.Core.Model.Enums;
 
 namespace TradeHub.Charts.Modules
 {
@@ -16,6 +18,9 @@ namespace TradeHub.Charts.Modules
         /// The maximum number of price lines to show on the Y axis of a price chart.
         /// </summary>
         private const int MAX_PRICE_INCREMENTS_NB = 10;
+
+        private const int SPACE_BETWEEN_TICK_HIGH_AND_INDICATOR = 8;
+        private const int TRADE_HISTORY_INDICATOR_SIZE = 4;
 
         private const int SPACE_BETWEEN_RIGHT_LEGEND_AND_LABEL = 6;
         
@@ -109,7 +114,26 @@ namespace TradeHub.Charts.Modules
 
                 var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
                 DrawingHelper.DrawLine(g, Pens.Black, x, yPosHigh, x, yPosLow);
+
+                if (parent.TransactionHistory != null)
+                {
+                    DrawTransactionHistory(g, tick, x, yPosHigh);
+                }
             }
+        }
+
+        private void DrawTransactionHistory(Graphics g, StockTick tick, float x, float yPosHigh)
+        {
+            // TODO: handle multiple transactions for a single tick (e.g. daily chart with multiple intradat trades, do we want to see all trades or the still open trades?)
+            var dailyTrade = parent.TransactionHistory.FirstOrDefault(t => t.Timestamp.Date == tick.Timestamp.Date && t.Symbol == parent.Symbol);
+            if (dailyTrade == null)
+            {
+                return;
+            }
+
+            var brush = dailyTrade.Action == TradeOrderAction.Buy ? Brushes.Green : Brushes.DarkRed;
+
+            DrawingHelper.FillEllipse(g, brush, x - 2, yPosHigh - SPACE_BETWEEN_TICK_HIGH_AND_INDICATOR, TRADE_HISTORY_INDICATOR_SIZE, TRADE_HISTORY_INDICATOR_SIZE);
         }
 
         /// <summary>
