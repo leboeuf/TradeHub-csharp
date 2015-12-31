@@ -38,7 +38,6 @@ namespace TradeHub.Charts
         {
             // The "- SPACE_BETWEEN_CHART_MODULES" is because the first module doesn't have a top margin.
             get { return Modules.Sum(module => (module.Height + SPACE_BETWEEN_CHART_MODULES)) - SPACE_BETWEEN_CHART_MODULES; }
-            private set { }
         }
         #endregion
 
@@ -73,7 +72,6 @@ namespace TradeHub.Charts
         {
             Modules = new List<StaticChartModule>
             {
-                new StaticChartModule(this),
                 new StaticChartModule(this)
             };
         }

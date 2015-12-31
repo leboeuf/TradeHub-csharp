@@ -17,6 +17,13 @@ namespace TradeHub.Charts
         /// </summary>
         private const int MAX_PRICE_INCREMENTS_NB = 10;
 
+        /// <summary>
+        /// If set to true, the space between each tick will be represented by an integer. Otherwise, float will be used.
+        /// In practice, when set to true each tick position will be rounded to the nearest pixel and whitespace might appear to the left or right of the chart data.
+        /// When set to false the tick position will use all the available space and might overlap with other data or chart components.
+        /// </summary>
+        private const bool ROUND_SPACE_BETWEEN_DIV_X = false;
+
         private const int RIGHT_LEGEND_WIDTH = 60;
         private const int RIGHT_LEGEND_DASH_LENGTH = 4;
         private const int BOTTOM_LEGEND_WIDTH = 20;
@@ -32,7 +39,7 @@ namespace TradeHub.Charts
         /// <summary>
         /// Spaces between divisions on the X axis. This is calculated using the number of ticks to display and the available width.
         /// </summary>
-        private int spaceBetweenDivX;
+        private float spaceBetweenDivX;
 
         /// <summary>
         /// The height of the module.
@@ -50,7 +57,9 @@ namespace TradeHub.Charts
         /// </summary>
         public void Draw(Graphics g)
         {
-            spaceBetweenDivX = (int)(g.ClipBounds.Width - RIGHT_LEGEND_WIDTH) / parent.StockData.Count;
+            spaceBetweenDivX = ROUND_SPACE_BETWEEN_DIV_X ?
+                (int)(g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.StockData.Count:
+                (g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.StockData.Count;
 
             DrawBorder(g);
 
