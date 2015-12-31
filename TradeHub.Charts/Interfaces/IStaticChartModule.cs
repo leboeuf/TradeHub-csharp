@@ -2,8 +2,13 @@
 
 namespace TradeHub.Charts.Interfaces
 {
-    interface IStaticChartModule
+    /// <summary>
+    /// Defines a static chart module.
+    /// </summary>
+    public interface IStaticChartModule
     {
+        int Height { get; }
+
         /// <summary>
         /// Draws the module on the Graphics drawing surface.
         /// </summary>

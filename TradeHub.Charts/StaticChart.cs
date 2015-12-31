@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using TradeHub.Charts.GDI;
+using TradeHub.Charts.Interfaces;
 using TradeHub.Charts.Modules;
 using TradeHub.Core.Model;
 
@@ -66,14 +66,15 @@ namespace TradeHub.Charts
         /// <summary>
         /// List of the chart modules (components) composing this chart.
         /// </summary>
-        public List<StaticChartModule> Modules { get; set; }
+        public List<IStaticChartModule> Modules { get; set; }
         #endregion
 
         public StaticChart()
         {
-            Modules = new List<StaticChartModule>
+            Modules = new List<IStaticChartModule>
             {
-                new StaticChartModule(this)
+                new PriceStaticChartModule(this),
+                new VolumeStaticChartModule(this)
             };
         }
 
