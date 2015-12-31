@@ -2,10 +2,11 @@
 using System.Drawing;
 using System.Linq;
 using TradeHub.Charts.GDI;
+using TradeHub.Charts.Interfaces;
 
-namespace TradeHub.Charts
+namespace TradeHub.Charts.Modules
 {
-    public class StaticChartModule
+    public class StaticChartModule : IStaticChartModule
     {
         /// <summary>
         /// The minimum number of price lines to show on the Y axis of a price chart.

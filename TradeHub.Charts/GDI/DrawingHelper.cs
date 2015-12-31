@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.InteropServices;
 
 namespace TradeHub.Charts.GDI
 {

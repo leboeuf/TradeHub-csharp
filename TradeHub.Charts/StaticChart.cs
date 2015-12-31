@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using TradeHub.Charts.GDI;
+using TradeHub.Charts.Modules;
 using TradeHub.Core.Model;
 
 namespace TradeHub.Charts
