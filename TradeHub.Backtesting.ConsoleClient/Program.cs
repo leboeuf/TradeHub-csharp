@@ -93,6 +93,7 @@ namespace TradeHub.Backtesting.ConsoleClient
             Console.WriteLine("Backtest results");
             Console.WriteLine(" Portfolio cash balance: {0}", backtest.Context.Portfolio.CashBalance);
             Console.WriteLine(" Portfolio positions: {0}", backtest.Context.Portfolio.Positions.Count);
+            Console.WriteLine(" Number of trades done: {0}", backtest.Context.Portfolio.TransactionHistory.Count);
 
             var totalPortfolioValue = backtest.Context.Portfolio.CashBalance;
             foreach (var position in backtest.Context.Portfolio.Positions)
