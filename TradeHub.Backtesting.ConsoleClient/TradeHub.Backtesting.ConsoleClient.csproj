@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,6 +53,10 @@
     <ProjectReference Include="..\TradeHub.Backtesting.Framework\TradeHub.Backtesting.Framework.csproj">
       <Project>{e18fbe59-39b3-496e-b81c-8f12016791c1}</Project>
       <Name>TradeHub.Backtesting.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TradeHub.Charts\TradeHub.Charts.csproj">
+      <Project>{9274872C-BEE4-44F8-83F2-4D31E2BFFED8}</Project>
+      <Name>TradeHub.Charts</Name>
     </ProjectReference>
     <ProjectReference Include="..\TradeHub.Core.DataProviders\TradeHub.Core.DataProviders.csproj">
       <Project>{47757d91-06e1-4e37-9b57-2bcfcc2a9f7c}</Project>

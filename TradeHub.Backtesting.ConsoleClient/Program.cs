@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using TradeHub.Backtesting.ConsoleClient.Strategies;
 using TradeHub.Backtesting.Framework;
+using TradeHub.Charts;
 using TradeHub.Core.DataProviders;
 using TradeHub.Core.Model;
 using TradeHub.Core.Model.Enums;
@@ -54,6 +57,7 @@ namespace TradeHub.Backtesting.ConsoleClient
             Console.WriteLine("Elapsed: {0} seconds ({1})", stopwatch.Elapsed.TotalSeconds, stopwatch.Elapsed);
 
             WriteBacktestResults(backtest);
+            GenerateChart(backtest);
 
             Console.ReadKey();
         }
@@ -101,6 +105,25 @@ namespace TradeHub.Backtesting.ConsoleClient
                 totalPortfolioValue += position.Quantity * backtest.Context.StockData[backtest.Context.StockData.Count - 1].Close;
             }
             Console.WriteLine(" Portfolio total value: {0}", totalPortfolioValue);
+
+            Console.WriteLine();
+        }
+
+        private static void GenerateChart(Backtest backtest)
+        {
+            Console.WriteLine("Generating chart...");
+
+            var path = string.Format("{0}\\tradehub-backtest-{1}-{2}.png", Environment.GetFolderPath(Environment.SpecialFolder.Desktop), backtest.Context.Symbol, DateTime.Now.ToString("yyyyMMddHHmmss"));
+            var chart = new StaticChart
+            {
+                Width = 640,
+                BackgroundColor = Color.Beige,
+                StockData = backtest.Context.StockData
+            };
+
+            var bitmap = chart.Draw();
+            bitmap.Save(path, ImageFormat.Png);
+            Console.WriteLine("Chart saved to: {0}", path);
 
             Console.WriteLine();
         }
