@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Web", "TradeHub.Web\TradeHub.Web.csproj", "{8637E4C3-620F-4586-A353-8204A7D6DD6E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{10DFD555-BF50-454E-B709-26D7A8369D7B} = {10DFD555-BF50-454E-B709-26D7A8369D7B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.MarketPerformance", "TradeHub.MarketPerformance\TradeHub.MarketPerformance.csproj", "{10DFD555-BF50-454E-B709-26D7A8369D7B}"
 EndProject

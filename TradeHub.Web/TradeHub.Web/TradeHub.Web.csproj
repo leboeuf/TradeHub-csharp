@@ -245,6 +245,12 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TradeHub.MarketPerformance\TradeHub.MarketPerformance.csproj">
+      <Project>{10dfd555-bf50-454e-b709-26d7a8369d7b}</Project>
+      <Name>TradeHub.MarketPerformance</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

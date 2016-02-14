@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Threading.Tasks;
 using System.Web.Mvc;
+using TradeHub.MarketPerformance.ETL;
 
 namespace TradeHub.Web.Controllers
 {
@@ -25,6 +23,13 @@ namespace TradeHub.Web.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public async Task<ActionResult> TestMarketPerformanceReport()
+        {
+            var t = new TsxListingDownloader();
+            var r = await t.Download("^TTMN");
+            return null;
         }
     }
 }
