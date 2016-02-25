@@ -10,7 +10,7 @@ namespace TradeHub.MarketPerformance
         {
             // Create database table
             DatabaseHelper.ExecuteNonQuery("DROP TABLE IF EXISTS listing");
-            DatabaseHelper.ExecuteNonQuery("CREATE TABLE listing (index TEXT, symbol TEXT)");
+            DatabaseHelper.ExecuteNonQuery("CREATE TABLE listing (indice TEXT, symbol TEXT)"); // Cannot use reserved word "index"
 
             // Download listing
             var index = "^TTMN";
@@ -20,7 +20,7 @@ namespace TradeHub.MarketPerformance
             // Insert listing data
             foreach (var symbol in symbols)
             {
-                DatabaseHelper.ExecuteNonQuery(string.Format("INSERT INTO listing (index, symbol) VALUES ({0}, {1})", index, symbol));
+                DatabaseHelper.ExecuteNonQuery(string.Format("INSERT INTO listing (indice, symbol) VALUES (\"{0}\", \"{1}\")", index, symbol)); // TODO: bind parameters
             }
 
             var data = DatabaseHelper.ExecuteQuery("SELECT * FROM listing");

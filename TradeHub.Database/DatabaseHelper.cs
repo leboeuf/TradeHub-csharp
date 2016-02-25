@@ -1,11 +1,13 @@
 ﻿using System.Data;
 using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
 
 namespace TradeHub.Database
 {
     public static class DatabaseHelper
     {
-        private const string _connectionString = @"Data Source=C:\tradehub.sqlite;Version=3;";
+        private const string _connectionString = @"Data Source=D:\tradehub.sqlite;Version=3;";
 
         public static DataTable ExecuteQuery(string sql)
         {
