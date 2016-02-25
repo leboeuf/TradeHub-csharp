@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Web", "TradeHub.We
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.MarketPerformance", "TradeHub.MarketPerformance\TradeHub.MarketPerformance.csproj", "{10DFD555-BF50-454E-B709-26D7A8369D7B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2} = {FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeHub.Database", "TradeHub.Database\TradeHub.Database.csproj", "{FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +29,10 @@ Global
 		{10DFD555-BF50-454E-B709-26D7A8369D7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10DFD555-BF50-454E-B709-26D7A8369D7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10DFD555-BF50-454E-B709-26D7A8369D7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF5A2E3A-2022-421F-86DE-DEEC7C3C33B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Web.Mvc;
+using TradeHub.MarketPerformance;
 using TradeHub.MarketPerformance.ETL;
 
 namespace TradeHub.Web.Controllers
@@ -27,8 +28,8 @@ namespace TradeHub.Web.Controllers
 
         public async Task<ActionResult> TestMarketPerformanceReport()
         {
-            var t = new TsxListingDownloader();
-            var r = await t.Download("^TTMN");
+            var m = new MarketPerformanceReport();
+            await m.Run();
             return null;
         }
     }
