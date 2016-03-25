@@ -36,12 +36,13 @@ namespace TradeHub.Backtesting.ConsoleClient
             };
 
             backtest.Context.Portfolio = portfolio;
+            backtest.Context.Symbol = "SPY";
 
             WriteInfo("Downloading historical data...");
-            backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData("YHOO", new DateTime(2015, 09, 02), DateTime.Now);
+            backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData(backtest.Context.Symbol, new DateTime(2015, 11, 01), DateTime.Now);
 
             WriteInfo("Placing input trade orders...");
-            backtest.PlaceTradeOrder(TradeOrderAction.Buy, "YHOO", new DateTime(2015, 09, 02), 38.18m, 1000);
+            backtest.PlaceTradeOrder(TradeOrderAction.Buy, backtest.Context.Symbol, new DateTime(2016, 02, 08), 38.18m, 1000);
 
             WriteInfo("Backtest setup done.");
             WriteBacktestSetup(backtest);

@@ -114,6 +114,7 @@ namespace TradeHub.Charts.Modules
 
                 var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
                 DrawingHelper.DrawLine(g, Pens.Black, x, yPosHigh, x, yPosLow);
+                DrawingHelper.DrawLine(g, Pens.Black, x, yPosClose, x + 2, yPosClose);
 
                 if (parent.TransactionHistory != null)
                 {
