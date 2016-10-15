@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net;
 using System.Threading.Tasks;
 using TradeHub.Core.Model;
@@ -70,11 +71,11 @@ namespace TradeHub.Core.DataProviders
                     {
                         stockTick = new StockTick
                         {
-                            Timestamp = DateTime.Parse(splitted[0]),
-                            Open = decimal.Parse(splitted[1]),
-                            High = decimal.Parse(splitted[2]),
-                            Low = decimal.Parse(splitted[3]),
-                            Close = decimal.Parse(splitted[4]),
+                            Timestamp = DateTime.Parse(splitted[0], CultureInfo.InvariantCulture),
+                            Open = decimal.Parse(splitted[1], CultureInfo.InvariantCulture),
+                            High = decimal.Parse(splitted[2], CultureInfo.InvariantCulture),
+                            Low = decimal.Parse(splitted[3], CultureInfo.InvariantCulture),
+                            Close = decimal.Parse(splitted[4], CultureInfo.InvariantCulture),
                             Volume = int.Parse(splitted[5])
                         };
                     }
