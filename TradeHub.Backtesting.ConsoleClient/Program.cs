@@ -14,20 +14,14 @@ namespace TradeHub.Backtesting.ConsoleClient
 {
     class Program
     {
-        static void Main(string[] args)
-        {
-            // Not allowed to declare async Main, so run program in a Task.
-            MainAsync(args).GetAwaiter().GetResult(); // StackOverflow #9208921
-        }
-
-        static async Task MainAsync(string[] args)
+        static async Task Main(string[] args)
         {
             WriteTitle();
             WriteInfo("Setting up backtest...");
 
             var backtest = new Backtest
             {
-                BacktestingStrategy = new DailyMomentumBacktestingStrategy()
+                BacktestingStrategy = new BreakoutBuyBacktestingStrategy()
             };
 
             var portfolio = new Portfolio
@@ -39,10 +33,10 @@ namespace TradeHub.Backtesting.ConsoleClient
             backtest.Context.Symbol = "SPY";
 
             WriteInfo("Downloading historical data...");
-            backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData(backtest.Context.Symbol, new DateTime(2015, 11, 01), DateTime.Now);
+            backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData(backtest.Context.Symbol, new DateTime(2020, 04, 01), DateTime.Now);
 
             WriteInfo("Placing input trade orders...");
-            backtest.PlaceTradeOrder(TradeOrderAction.Buy, backtest.Context.Symbol, new DateTime(2016, 02, 08), 38.18m, 1000);
+            //backtest.PlaceTradeOrder(TradeOrderAction.Buy, backtest.Context.Symbol, new DateTime(2020, 02, 08), 38.18m, 1000);
 
             WriteInfo("Backtest setup done.");
             WriteBacktestSetup(backtest);
