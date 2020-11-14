@@ -32,14 +32,13 @@ namespace TradeHub.Core.DataProviders
         /// <returns>A list of StockTicks for the requested symbol.</returns>
         public static async Task<List<StockTick>> DownloadHistoricalData(string symbol, DateTime start, DateTime end, HistoricalFrequency frequency = HistoricalFrequency.Daily)
         {
-            string url = string.Format("http://ichart.finance.yahoo.com/table.csv?s={0}&a={1}&b={2}&c={3}&d={4}&e={5}&f={6}&g={7}&ignore=.csv&nocache={8}",
+            var startTimestamp = Math.Floor(start.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+            var endTimestamp = Math.Floor(end.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
+
+            string url = string.Format("https://query1.finance.yahoo.com/v7/finance/download/{0}?period1={1}&period2={2}&interval={3}&events=history&includeAdjustedClose=true&nocache={4}",
                 symbol,
-                start.Month - 1,
-                start.Day,
-                start.Year,
-                end.Month - 1,
-                end.Day,
-                end.Year,
+                startTimestamp,
+                endTimestamp,
                 HistoricalFrequencyToYahooQueryString(frequency),
                 DateTime.UtcNow.ToString("yyyyMMddHHmmssffff")
             );
@@ -76,14 +75,14 @@ namespace TradeHub.Core.DataProviders
                             High = decimal.Parse(splitted[2], CultureInfo.InvariantCulture),
                             Low = decimal.Parse(splitted[3], CultureInfo.InvariantCulture),
                             Close = decimal.Parse(splitted[4], CultureInfo.InvariantCulture),
-                            Volume = int.Parse(splitted[5])
+                            //AdjustedClose = decimal.Parse(splitted[5], CultureInfo.InvariantCulture), // Requires "includeAdjustedClose=true" in URL parameters
+                            Volume = int.Parse(splitted[6])
                         };
                     }
 
                     result.Add(stockTick);
                 }
 
-                result.Reverse(); // Put in chronological order
                 return result;
             }
 
@@ -95,10 +94,16 @@ namespace TradeHub.Core.DataProviders
         /// </summary>
         /// <param name="frequency">The frequency of ticks.</param>
         /// <returns>The GET historical frequency parameter value to use for Yahoo historical data URL.</returns>
-        private static char HistoricalFrequencyToYahooQueryString(HistoricalFrequency frequency)
+        private static string HistoricalFrequencyToYahooQueryString(HistoricalFrequency frequency)
         {
-            // HistoricalFrequency enum maps directly to Yahoo's values so simply return it.
-            return (char)frequency;
+            //  Valid intervals: [1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo]
+            switch (frequency)
+            {
+                case HistoricalFrequency.Daily: return "1d";
+                case HistoricalFrequency.Weekly: return "1d";
+                case HistoricalFrequency.Monthly: return "1d";
+                default: throw new NotImplementedException($"{nameof(HistoricalFrequency)} not supported: '{frequency}'.");
+            }
         }
     }
 }

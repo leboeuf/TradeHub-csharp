@@ -17,7 +17,7 @@ namespace TradeHub.Charts.StaticChartExample
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            var stockData = await YahooHistoricalDataProvider.DownloadHistoricalData("YHOO", new DateTime(2015, 01, 02), DateTime.Now);
+            var stockData = await YahooHistoricalDataProvider.DownloadHistoricalData("MSFT", new DateTime(2020, 01, 02), DateTime.Now);
 
             _chart = new StaticChart
             {
