@@ -1,79 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0626059D-A02D-4628-9366-0B1321A13AE4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TradeHub.Backtesting.ConsoleClient</RootNamespace>
-    <AssemblyName>TradeHub.Backtesting.ConsoleClient</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\TradeHub.Backtesting.Framework\TradeHub.Backtesting.Framework.csproj" />
+    <ProjectReference Include="..\TradeHub.Charts\TradeHub.Charts.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Strategies\DailyMomentumBacktestingStrategy.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TradeHub.Backtesting.Framework\TradeHub.Backtesting.Framework.csproj">
-      <Project>{e18fbe59-39b3-496e-b81c-8f12016791c1}</Project>
-      <Name>TradeHub.Backtesting.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TradeHub.Charts\TradeHub.Charts.csproj">
-      <Project>{9274872C-BEE4-44F8-83F2-4D31E2BFFED8}</Project>
-      <Name>TradeHub.Charts</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TradeHub.Core.DataProviders\TradeHub.Core.DataProviders.csproj">
-      <Project>{47757d91-06e1-4e37-9b57-2bcfcc2a9f7c}</Project>
-      <Name>TradeHub.Core.DataProviders</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\TradeHub.Core.Model\TradeHub.Core.Model.csproj">
-      <Project>{1ca72d28-d75e-4a97-ad89-ff34fed88b64}</Project>
-      <Name>TradeHub.Core.Model</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

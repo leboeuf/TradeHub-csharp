@@ -1,7 +1,5 @@
-﻿using System.Data;
-using System.Data.SQLite;
-using System.IO;
-using System.Reflection;
+﻿using Microsoft.Data.Sqlite;
+using System.Data;
 
 namespace TradeHub.Database
 {
@@ -11,14 +9,14 @@ namespace TradeHub.Database
 
         public static DataTable ExecuteQuery(string sql)
         {
-            var command = new SQLiteCommand { CommandText = sql, CommandType = CommandType.Text };
+            var command = new SqliteCommand { CommandText = sql, CommandType = CommandType.Text };
 
-            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            using (SqliteConnection connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
                 command.Connection = connection;
 
-                using (SQLiteDataReader reader = command.ExecuteReader())
+                using (SqliteDataReader reader = command.ExecuteReader())
                 {
                     DataTable result = new DataTable();
                     result.Load(reader);
@@ -29,9 +27,9 @@ namespace TradeHub.Database
         
         public static void ExecuteNonQuery(string sql)
         {
-            var command = new SQLiteCommand { CommandText = sql, CommandType = CommandType.Text };
+            var command = new SqliteCommand { CommandText = sql, CommandType = CommandType.Text };
 
-            using (SQLiteConnection connection = new SQLiteConnection(_connectionString))
+            using (SqliteConnection connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
                 command.Connection = connection;

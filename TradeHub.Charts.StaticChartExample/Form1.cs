@@ -12,7 +12,7 @@ namespace TradeHub.Charts.StaticChartExample
         public Form1()
         {
             InitializeComponent();
-            this.DoubleBuffered = true;
+            DoubleBuffered = true;
         }
 
         private async void Form1_Load(object sender, EventArgs e)
@@ -26,20 +26,20 @@ namespace TradeHub.Charts.StaticChartExample
                 StockData = stockData
             };
 
-            this.BackgroundImage = _chart.Draw();
-            this.ClientSize = new Size(_chart.Width, _chart.Height);
+            BackgroundImage = _chart.Draw();
+            ClientSize = new Size(_chart.Width, _chart.Height);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            if (this.ClientSize.Width <= 0 || this.ClientSize.Height <= 0)
+            if (_chart == null || ClientSize.Width <= 0 || ClientSize.Height <= 0)
             {
                 return;
             }
 
             // Redraw chart on resize
-            _chart.Width = this.ClientSize.Width;
-            this.BackgroundImage = _chart.Draw();
+            _chart.Width = ClientSize.Width;
+            BackgroundImage = _chart.Draw();
         }
     }
 }
