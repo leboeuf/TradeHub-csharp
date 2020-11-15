@@ -13,8 +13,8 @@ namespace TradeHub.MarketPerformance
         public async Task Run()
         {
             // Create database table
-            DatabaseHelper.ExecuteNonQuery("DROP TABLE IF EXISTS listing");
-            DatabaseHelper.ExecuteNonQuery("CREATE TABLE listing (indice TEXT, symbol TEXT)"); // Cannot use reserved word "index"
+            await DatabaseHelper.ExecuteNonQuery("DROP TABLE IF EXISTS listing");
+            await DatabaseHelper.ExecuteNonQuery("CREATE TABLE listing (indice TEXT, symbol TEXT)"); // Cannot use reserved word "index"
 
             // Download listing
             var s = new Stopwatch();
@@ -29,7 +29,7 @@ namespace TradeHub.MarketPerformance
             await Task.WhenAll(tasks);
             s.Stop();
 
-            var data = DatabaseHelper.ExecuteQuery("SELECT * FROM listing");
+            var data = await DatabaseHelper.ExecuteQuery("SELECT * FROM listing");
 
         }
 
@@ -40,7 +40,7 @@ namespace TradeHub.MarketPerformance
             // Insert listing data
             foreach (var symbol in symbols)
             {
-                DatabaseHelper.ExecuteNonQuery(string.Format("INSERT INTO listing (indice, symbol) VALUES (\"{0}\", \"{1}\")", index, symbol)); // TODO: bind parameters
+                await DatabaseHelper.ExecuteNonQuery(string.Format("INSERT INTO listing (indice, symbol) VALUES (\"{0}\", \"{1}\")", index, symbol)); // TODO: bind parameters
             }
         }
     }
