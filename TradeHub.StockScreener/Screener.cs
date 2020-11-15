@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using TradeHub.Core.DataProviders;
 using TradeHub.Database;
 
@@ -6,11 +8,22 @@ namespace TradeHub.StockScreener
 {
     public class Screener
     {
-        public async Task<string> Find()
+        /// <summary>
+        /// Finds symbols matching the given search options.
+        /// </summary>
+        /// <returns>An array of symbols.</returns>
+        public async Task<string[]> Find(ScreenerOptions options = null)
         {
             if (!await SchemaExists())
             {
                 await SetupDatabase();
+            }
+
+            if (options == null)
+            {
+                // Return the full list of symbols
+                var dataTable = await DatabaseHelper.ExecuteQuery("SELECT symbol FROM symbols ORDER BY symbol");
+                return dataTable.AsEnumerable().Select(r => r[0].ToString()).ToArray();
             }
 
             // TODO
