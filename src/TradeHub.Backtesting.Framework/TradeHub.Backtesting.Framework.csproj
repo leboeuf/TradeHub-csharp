@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TradeHub.Core.DataProviders\TradeHub.Core.DataProviders.csproj" />
+    <ProjectReference Include="..\TradeHub.Core.Model\TradeHub.Core.Model.csproj" />
+  </ItemGroup>
+  
+</Project>
