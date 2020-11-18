@@ -40,8 +40,11 @@ namespace TradeHub.Backtesting.Framework
         /// <remarks>
         /// The "current" word in variables names refers to the current iteration step in the simulation.
         /// </remarks>
-        public void Run()
+        public BacktestingResult Run()
         {
+            Context.StartingCashBalance = Context.Portfolio.CashBalance;
+            Context.StartingMarketValue = Context.Portfolio.Positions.Sum(p => p.Quantity * Context.StockData[0].Close);
+
             for (Context.CurrentIteration = 0; Context.CurrentIteration < Context.StockData.Count(); ++Context.CurrentIteration)
             {
                 var currentStockTick = Context.StockData[Context.CurrentIteration];
@@ -56,6 +59,8 @@ namespace TradeHub.Backtesting.Framework
                 
                 BacktestingStrategy?.Run(Context);
             }
+
+            return GenerateBacktestingResult();
         }
 
         private void ExecuteTradeOrders(IEnumerable<TradeOrder> transactionsForCurrentDate)
@@ -69,6 +74,28 @@ namespace TradeHub.Backtesting.Framework
         private void ExecuteTradeOrder(TradeOrder tradeOrder)
         {
             BacktestingPortfolioManager.ExecuteTradeOrder(tradeOrder, Context.Portfolio);
+        }
+
+        private BacktestingResult GenerateBacktestingResult()
+        {
+            // Calculate balances
+            var endingMarketValue = Context.Portfolio.Positions.Sum(p => p.Quantity * Context.StockData[Context.StockData.Count - 1].Close);
+            var totalStartingValue = Context.StartingCashBalance + Context.StartingMarketValue;
+            var totalEndingValue = Context.Portfolio.CashBalance + endingMarketValue;
+
+            // Calculate whether the strategy was profitable
+            var strategyHasExecutedTrades = Context.Portfolio.TransactionHistory.Any(t => t.WasTriggeredByStrategy);
+            var isProfitable = strategyHasExecutedTrades && totalEndingValue > totalStartingValue;
+
+            return new BacktestingResult
+            {
+                StartingCashBalance = Context.StartingCashBalance,
+                StartingMarketValue = Context.StartingMarketValue,
+                EndingCashBalance = Context.Portfolio.CashBalance,
+                EndingMarketValue = endingMarketValue,
+                IsProfitable = isProfitable,
+                TradesExecuted = Context.Portfolio.TransactionHistory
+            };
         }
     }
 }

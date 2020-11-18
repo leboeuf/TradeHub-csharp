@@ -34,7 +34,7 @@ namespace TradeHub.Charts
         /// <summary>
         /// A transaction history on the financial instrument for which the chart is drawn. If set, the trade orders will appear on the chart.
         /// </summary>
-        public List<TradeOrder> TransactionHistory { get; set; }
+        public IEnumerable<TradeOrder> TransactionHistory { get; set; }
 
         #region Dimensions
         /// <summary>

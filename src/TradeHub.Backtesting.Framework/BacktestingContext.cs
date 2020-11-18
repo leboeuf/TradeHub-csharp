@@ -29,6 +29,16 @@ namespace TradeHub.Backtesting.Framework
         /// </summary>
         public List<TradeOrder> InputTransactions = new List<TradeOrder>();
 
+        /// <summary>
+        /// The starting cash balance.
+        /// </summary>
+        public decimal StartingCashBalance { get; set; }
+
+        /// <summary>
+        /// The starting market value.
+        /// </summary>
+        public decimal StartingMarketValue { get; set; }
+
         public Portfolio Portfolio { get; set; }
     }
 }

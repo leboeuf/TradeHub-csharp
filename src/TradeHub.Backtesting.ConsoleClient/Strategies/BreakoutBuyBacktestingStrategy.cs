@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using TradeHub.Backtesting.Framework;
+﻿using TradeHub.Backtesting.Framework;
 using TradeHub.Backtesting.Framework.Interfaces;
 using TradeHub.Core.Model;
 using TradeHub.Core.Model.Enums;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TradeHub.Core.Model
 {
@@ -19,14 +20,13 @@ namespace TradeHub.Core.Model
 
         /// <summary>
         /// The list of transactions made in the portfolio.
-        /// TODO: TradeOrder is not sufficient, we need to know how much was paid in commission.
         /// </summary>
-        public List<TradeOrder> TransactionHistory { get; set; }
+        public List<ExecutedTradeOrder> TransactionHistory { get; set; }
 
         public Portfolio()
         {
             Positions = new List<Position>();
-            TransactionHistory = new List<TradeOrder>();
+            TransactionHistory = new List<ExecutedTradeOrder>();
         }
     }
 }

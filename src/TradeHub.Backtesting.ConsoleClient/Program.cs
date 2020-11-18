@@ -36,7 +36,7 @@ namespace TradeHub.Backtesting.ConsoleClient
             backtest.Context.StockData = await YahooHistoricalDataProvider.DownloadHistoricalData(backtest.Context.Symbol, new DateTime(2020, 04, 01), DateTime.Now);
 
             WriteInfo("Placing input trade orders...");
-            //backtest.PlaceTradeOrder(TradeOrderAction.Buy, backtest.Context.Symbol, new DateTime(2020, 02, 08), 38.18m, 1000);
+            backtest.PlaceTradeOrder(TradeOrderAction.Buy, backtest.Context.Symbol, new DateTime(2020, 02, 08), 38.18m, 1000);
 
             WriteInfo("Backtest setup done.");
             WriteBacktestSetup(backtest);

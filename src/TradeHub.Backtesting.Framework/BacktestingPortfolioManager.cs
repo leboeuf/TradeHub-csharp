@@ -20,8 +20,12 @@ namespace TradeHub.Backtesting.Framework
         /// Execute a TradeOrder on a Portfolio.
         /// In this implementation, all orders are handled as if they were accepted by the market.
         /// </summary>
+        /// <param name="tradeOrder">The trade order to execute.</param>
+        /// <param name="portfolio">The portfolio in which the trade is executed.</param>
+        /// <param name="commission">The commission fee to pay for this trade.</param>
+        /// <param name="wasScheduledTrade">Whether the trade was scheduled prior to running the simulation (true) or executed by the strategy (false).</param>
         /// <returns>Whether the trade was executed successfuly.</returns>
-        public static bool ExecuteTradeOrder(TradeOrder tradeOrder, Portfolio portfolio, decimal commission = 0)
+        public static bool ExecuteTradeOrder(TradeOrder tradeOrder, Portfolio portfolio, decimal commission = 0, bool wasScheduledTrade = false)
         {
             if (!tradeOrder.LimitPrice.HasValue)
             {
@@ -71,8 +75,15 @@ namespace TradeHub.Backtesting.Framework
                 throw new Exception("Unknown TradeOrderAction");
             }
 
-            portfolio.TransactionHistory.Add(tradeOrder);
             portfolio.CashBalance -= commission;
+
+            portfolio.TransactionHistory.Add(new ExecutedTradeOrder
+            {
+                CommissionPaid = commission,
+                TradeOrder = tradeOrder,
+                WasTriggeredByStrategy = wasScheduledTrade 
+            });
+
             return true;
         }
 
