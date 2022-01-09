@@ -3,14 +3,12 @@
 namespace TradeHub.Charts.Interfaces
 {
     /// <summary>
-    /// Defines a static chart module.
+    /// Defines an overlay that can appear on top of a module.
     /// </summary>
-    public interface IStaticChartModule
+    public interface IChartOverlay
     {
-        int Height { get; }
-
         /// <summary>
-        /// Draws the module on the Graphics drawing surface.
+        /// Draws the overlay on the Graphics drawing surface.
         /// </summary>
         void Draw(Graphics g);
     }

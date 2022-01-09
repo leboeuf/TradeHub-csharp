@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using TradeHub.Charts.GDI;
-using TradeHub.Charts.Interfaces;
 using TradeHub.Charts.Modules;
 using TradeHub.Core.Model;
 
@@ -27,9 +26,9 @@ namespace TradeHub.Charts
         public string Symbol { get; set; }
 
         /// <summary>
-        /// The stock data to plot on the chart.
+        /// The data to plot on the chart.
         /// </summary>
-        public List<StockTick> StockData { get; set; }
+        public TickList TickData { get; init; }
 
         /// <summary>
         /// A transaction history on the financial instrument for which the chart is drawn. If set, the trade orders will appear on the chart.
@@ -76,13 +75,13 @@ namespace TradeHub.Charts
         /// <summary>
         /// List of the chart modules (components) composing this chart.
         /// </summary>
-        public List<IStaticChartModule> Modules { get; set; }
+        public List<StaticChartModule> Modules { get; set; }
 
         #endregion
 
         public StaticChart()
         {
-            Modules = new List<IStaticChartModule>
+            Modules = new List<StaticChartModule>
             {
                 new PriceStaticChartModule(this),
                 new VolumeStaticChartModule(this)

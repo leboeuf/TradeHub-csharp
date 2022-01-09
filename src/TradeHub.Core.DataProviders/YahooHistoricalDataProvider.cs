@@ -13,10 +13,10 @@ namespace TradeHub.Core.DataProviders
         /// <summary>
         /// Get historical data between 2 dates for a list of symbols.
         /// </summary>
-        /// <returns>A dictionary of lists of StockTicks for the requested symbols. The symbol is used as the dictionary key.</returns>
-        public static async Task<Dictionary<string, List<StockTick>>> DownloadHistoricalData(List<string> symbols, DateTime start, DateTime end, HistoricalFrequency frequency = HistoricalFrequency.Daily)
+        /// <returns>A dictionary of lists of Ticks for the requested symbols. The symbol is used as the dictionary key.</returns>
+        public static async Task<Dictionary<string, List<Tick>>> DownloadHistoricalData(List<string> symbols, DateTime start, DateTime end, HistoricalFrequency frequency = HistoricalFrequency.Daily)
         {
-            var result = new Dictionary<string, List<StockTick>>();
+            var result = new Dictionary<string, List<Tick>>();
 
             foreach (var symbol in symbols)
             {
@@ -29,8 +29,8 @@ namespace TradeHub.Core.DataProviders
         /// <summary>
         /// Download historical data for one symbol between 2 dates.
         /// </summary>
-        /// <returns>A list of StockTicks for the requested symbol.</returns>
-        public static async Task<List<StockTick>> DownloadHistoricalData(string symbol, DateTime start, DateTime end, HistoricalFrequency frequency = HistoricalFrequency.Daily)
+        /// <returns>A list of Ticks for the requested symbol.</returns>
+        public static async Task<List<Tick>> DownloadHistoricalData(string symbol, DateTime start, DateTime end, HistoricalFrequency frequency = HistoricalFrequency.Daily)
         {
             var startTimestamp = Math.Floor(start.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
             var endTimestamp = Math.Floor(end.Subtract(new DateTime(1970, 1, 1)).TotalSeconds);
@@ -50,17 +50,17 @@ namespace TradeHub.Core.DataProviders
 
             if (data.Length > 0)
             {
-                var result = new List<StockTick>();
+                var result = new List<Tick>();
 
                 var lines = data.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
                 for (int indLine = 1; indLine < lines.Length; indLine++) // indLine = 1 to skip header row
                 {
                     var splitted = lines[indLine].Replace("\"", "").Split(',');
 
-                    StockTick stockTick;
+                    Tick tick;
                     if (frequency == HistoricalFrequency.DividendsOnly)
                     {
-                        stockTick = new StockTick
+                        tick = new Tick
                         {
                             Timestamp = DateTime.Parse(splitted[0]),
                             Dividend = decimal.Parse(splitted[1])
@@ -68,7 +68,7 @@ namespace TradeHub.Core.DataProviders
                     }
                     else
                     {
-                        stockTick = new StockTick
+                        tick = new Tick
                         {
                             Timestamp = DateTime.Parse(splitted[0], CultureInfo.InvariantCulture),
                             Open = decimal.Parse(splitted[1], CultureInfo.InvariantCulture),
@@ -80,7 +80,7 @@ namespace TradeHub.Core.DataProviders
                         };
                     }
 
-                    result.Add(stockTick);
+                    result.Add(tick);
                 }
 
                 return result;

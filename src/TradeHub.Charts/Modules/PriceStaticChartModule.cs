@@ -36,8 +36,8 @@ namespace TradeHub.Charts.Modules
         public override void Draw(Graphics g)
         {
             spaceBetweenDivX = ROUND_SPACE_BETWEEN_DIV_X ?
-                (int)(g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.StockData.Count:
-                (g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.StockData.Count;
+                (int)(g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.TickData.Ticks.Count():
+                (g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.TickData.Ticks.Count();
 
             DrawBorder(g);
 
@@ -45,6 +45,8 @@ namespace TradeHub.Charts.Modules
             DrawXAxis(g);
 
             DrawData(g);
+
+            DrawOverlays(g);
         }
 
         public override void DrawXAxis(Graphics g)
@@ -55,7 +57,7 @@ namespace TradeHub.Charts.Modules
             DrawingHelper.DrawLine(g, Pens.BlueViolet, axisLeftX, axisY, axisRightX, axisY);
 
             // Draw divisions on the axis
-            for (int i = 0; i < parent.StockData.Count; ++i)
+            for (int i = 0; i < parent.TickData.Ticks.Count(); ++i)
             {
                 var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
                 DrawingHelper.DrawLine(g, Pens.BlueViolet, x, axisY - BOTTOM_LEGEND_DASH_LENGTH / 2, x, axisY + BOTTOM_LEGEND_DASH_LENGTH / 2);
@@ -69,8 +71,8 @@ namespace TradeHub.Charts.Modules
             var axisBottomY = g.ClipBounds.Y + Height - parent.ModulesBorderWidth - BOTTOM_LEGEND_WIDTH;
             DrawingHelper.DrawLine(g, Pens.Purple, axisX, axisTopY, axisX, axisBottomY);
 
-            var max = parent.StockData.Max(s => s.High);
-            var min = parent.StockData.Min(s => s.Low);
+            var max = parent.TickData.Ticks.Max(s => s.High);
+            var min = parent.TickData.Ticks.Min(s => s.Low);
             var range = max - min;
             var priceSteps = FindPriceScale(range);
             var nbSteps = range / priceSteps;
@@ -82,7 +84,7 @@ namespace TradeHub.Charts.Modules
             for (int i = 0; i < nbSteps; ++i)
             {
                 // Draw dash
-                var y = WorldToScreen(currentPrice, plotAreaTop, plotAreaBottom);
+                var y = WorldToScreen( parent.TickData, currentPrice, plotAreaTop, plotAreaBottom);
                 DrawingHelper.DrawLine(g, Pens.BlueViolet, axisX - RIGHT_LEGEND_DASH_LENGTH, y, axisX + RIGHT_LEGEND_DASH_LENGTH, y);
 
                 // Draw label
@@ -103,14 +105,14 @@ namespace TradeHub.Charts.Modules
         {
             var plotAreaTop = (int)g.ClipBounds.Y + parent.ModulesBorderWidth;
             var plotAreaBottom = (int)g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - parent.ModulesBorderWidth;
-            for (int i = 0; i < parent.StockData.Count; ++i)
+            for (int i = 0; i < parent.TickData.Ticks.Count(); ++i)
             {
-                var tick = parent.StockData[i];
+                var tick = parent.TickData.Ticks.ElementAt(i);
 
                 // Price bar
-                var yPosHigh = WorldToScreen(tick.High, plotAreaTop, plotAreaBottom);
-                var yPosLow = WorldToScreen(tick.Low, plotAreaTop, plotAreaBottom);
-                var yPosClose = WorldToScreen(tick.Close, plotAreaTop, plotAreaBottom);
+                var yPosHigh = WorldToScreen(parent.TickData, tick.High, plotAreaTop, plotAreaBottom);
+                var yPosLow = WorldToScreen(parent.TickData, tick.Low, plotAreaTop, plotAreaBottom);
+                var yPosClose = WorldToScreen(parent.TickData, tick.Close, plotAreaTop, plotAreaBottom);
 
                 var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
                 DrawingHelper.DrawLine(g, Pens.Black, x, yPosHigh, x, yPosLow);
@@ -123,9 +125,17 @@ namespace TradeHub.Charts.Modules
             }
         }
 
-        private void DrawTransactionHistory(Graphics g, StockTick tick, float x, float yPosHigh)
+        public override void DrawOverlays(Graphics g)
         {
-            // TODO: handle multiple transactions for a single tick (e.g. daily chart with multiple intradat trades, do we want to see all trades or the still open trades?)
+            foreach (var overlay in Overlays)
+            {
+                overlay.Draw(g);
+            }
+        }
+
+        private void DrawTransactionHistory(Graphics g, Tick tick, float x, float yPosHigh)
+        {
+            // TODO: handle multiple transactions for a single tick (e.g. daily chart with multiple intraday trades, do we want to see all trades or the still open trades?)
             var dailyTrade = parent.TransactionHistory.FirstOrDefault(t => t.Timestamp.Date == tick.Timestamp.Date && t.Symbol == parent.Symbol);
             if (dailyTrade == null)
             {
@@ -135,27 +145,6 @@ namespace TradeHub.Charts.Modules
             var brush = dailyTrade.Action == TradeOrderAction.Buy ? Brushes.Green : Brushes.DarkRed;
 
             DrawingHelper.FillEllipse(g, brush, x - 2, yPosHigh - SPACE_BETWEEN_TICK_HIGH_AND_INDICATOR, TRADE_HISTORY_INDICATOR_SIZE, TRADE_HISTORY_INDICATOR_SIZE);
-        }
-
-        /// <summary>
-        /// Translate a price into a vertical screen coordinate.
-        /// </summary>
-        /// <param name="price">The price.</param>
-        /// <param name="yMin">The top of the drawing area.</param>
-        /// <param name="yMax">The bottom of the drawing area.</param>
-        /// <returns>Y coordinate to which the given price corresponds.</returns>
-        private int WorldToScreen(decimal price, int yMin, int yMax)
-        {
-            // TODO: can be optimized by storing these values (implement StockDataList)
-            var min = parent.StockData.Min(s => s.Low);
-            var max = parent.StockData.Max(s => s.High);
-            var range = max - min;
-
-            var yProp = 1 - ((price - min) / range);
-            var yOffset = yProp * (yMax - yMin);
-
-
-            return yMin + (int)yOffset;
         }
 
         /// <summary>

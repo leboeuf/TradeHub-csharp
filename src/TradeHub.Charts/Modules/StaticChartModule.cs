@@ -1,13 +1,16 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using TradeHub.Charts.GDI;
 using TradeHub.Charts.Interfaces;
+using TradeHub.Core.Model;
 
 namespace TradeHub.Charts.Modules
 {
     /// <summary>
     /// Base implementation of a static chart module. All static chart modules can derive from this class to benefit from its generic drawing methods.
     /// </summary>
-    public class StaticChartModule : IStaticChartModule
+    public class StaticChartModule
     {
         /// <summary>
         /// If set to true, the space between each tick will be represented by an integer. Otherwise, float will be used.
@@ -27,6 +30,11 @@ namespace TradeHub.Charts.Modules
         public StaticChart parent;
 
         /// <summary>
+        /// The overlays to draw on top of this module.
+        /// </summary>
+        public List<IChartOverlay> Overlays = new();
+
+        /// <summary>
         /// Spaces between divisions on the X axis. This is calculated using the number of ticks to display and the available width.
         /// </summary>
         public float spaceBetweenDivX;
@@ -36,11 +44,14 @@ namespace TradeHub.Charts.Modules
         /// </summary>
         public int Height { get; set; }
 
+        /// <summary>
+        /// Draws the module on the Graphics drawing surface.
+        /// </summary>
         public virtual void Draw(Graphics g)
         {
             spaceBetweenDivX = ROUND_SPACE_BETWEEN_DIV_X ?
-                (int)(g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.StockData.Count :
-                (g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.StockData.Count;
+                (int)(g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.TickData.Ticks.Count() :
+                (g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - RIGHT_LEGEND_DASH_LENGTH) / parent.TickData.Ticks.Count();
 
             DrawBorder(g);
 
@@ -48,6 +59,8 @@ namespace TradeHub.Charts.Modules
             DrawXAxis(g);
 
             DrawData(g);
+
+            DrawOverlays(g);
         }
 
         public void DrawBorder(Graphics g)
@@ -75,6 +88,11 @@ namespace TradeHub.Charts.Modules
             return;
         }
 
+        public virtual void DrawOverlays(Graphics g)
+        {
+            return;
+        }
+
         /// <summary>
         /// Prints an error message on the on the Graphics object.
         /// </summary>
@@ -84,6 +102,24 @@ namespace TradeHub.Charts.Modules
             var strSize = g.MeasureString(message, f);
             var msgPos = new PointF(g.ClipBounds.Width / 2 - strSize.Width / 2, g.ClipBounds.Height / 2 - strSize.Height / 2);
             DrawingHelper.DrawString(g, message, f, Brushes.Red, msgPos);
+        }
+
+        /// <summary>
+        /// Translate a price into a vertical screen coordinate.
+        /// </summary>
+        /// <param name="price">The price.</param>
+        /// <param name="yMin">The top of the drawing area.</param>
+        /// <param name="yMax">The bottom of the drawing area.</param>
+        /// <returns>Y coordinate to which the given price corresponds.</returns>
+        public int WorldToScreen(TickList tickData, decimal price, int yMin, int yMax)
+        {
+            var range = tickData.Max - tickData.Min;
+
+            var yProp = 1 - ((price - tickData.Min) / range);
+            var yOffset = yProp * (yMax - yMin);
+
+
+            return yMin + (int)yOffset;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using TradeHub.Charts.Overlays;
 using TradeHub.Core.DataProviders;
+using TradeHub.Core.Model;
 
 namespace TradeHub.Charts.StaticChartExample
 {
@@ -17,14 +19,25 @@ namespace TradeHub.Charts.StaticChartExample
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            var stockData = await YahooHistoricalDataProvider.DownloadHistoricalData("MSFT", new DateTime(2020, 01, 02), DateTime.Now);
+            var stockTicks = await YahooHistoricalDataProvider.DownloadHistoricalData("COST", DateTime.Today.AddDays(-202), DateTime.Now);
+            var tickList = new TickList(stockTicks);
 
             _chart = new StaticChart
             {
                 Width = 640,
                 BackgroundColor = Color.Beige,
-                StockData = stockData
+                TickData = tickList
             };
+            _chart.Modules[0].Overlays.Add(new LinearRegressionChartOverlay(_chart.Modules[0])
+            {
+                Color = Color.DarkGreen,
+                Thickness = 2,
+                //FirstValueIndex = stockData.Count - 101,
+                //LastValueIndex = stockData.Count - 1,
+                FromIndex = 0,
+                ToIndex = 140,
+                ExtendLine = true
+            });
 
             BackgroundImage = _chart.Draw();
             ClientSize = new Size(_chart.Width, _chart.Height);
