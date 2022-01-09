@@ -25,8 +25,15 @@ namespace TradeHub.Charts.StaticChartExample
             _chart = new StaticChart
             {
                 Width = 640,
-                BackgroundColor = Color.Beige,
-                TickData = tickList
+                TickData = tickList,
+                ChartStyleOptions = new ChartStyleOptions
+                {
+                    BackgroundColor = Color.FromArgb(25, 22, 52),
+                    ModulesBorderColor = new Pen(Color.FromArgb(48, 48, 48)),
+                    AxisColor = Pens.Gray,
+                    DataColor = Pens.Silver,
+                    YAxisLabelsColor = Brushes.Silver
+                }
             };
             _chart.Modules[0].Overlays.Add(new LinearRegressionChartOverlay(_chart.Modules[0])
             {

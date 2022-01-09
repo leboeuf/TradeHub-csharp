@@ -51,25 +51,28 @@ namespace TradeHub.Charts.Modules
 
         public override void DrawXAxis(Graphics g)
         {
-            var axisY = g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - parent.ModulesBorderWidth;
-            var axisLeftX = g.ClipBounds.X + parent.ModulesBorderWidth;
-            var axisRightX = g.ClipBounds.X + g.ClipBounds.Width - parent.ModulesBorderWidth;
-            DrawingHelper.DrawLine(g, Pens.BlueViolet, axisLeftX, axisY, axisRightX, axisY);
+            var axisY = g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - parent.ChartStyleOptions.ModulesBorderWidth;
+            var axisLeftX = g.ClipBounds.X + parent.ChartStyleOptions.ModulesBorderWidth;
+            var axisRightX = g.ClipBounds.X + g.ClipBounds.Width - parent.ChartStyleOptions.ModulesBorderWidth;
+            DrawingHelper.DrawLine(g, parent.ChartStyleOptions.AxisColor, axisLeftX, axisY, axisRightX, axisY);
 
             // Draw divisions on the axis
             for (int i = 0; i < parent.TickData.Ticks.Count(); ++i)
             {
-                var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
-                DrawingHelper.DrawLine(g, Pens.BlueViolet, x, axisY - BOTTOM_LEGEND_DASH_LENGTH / 2, x, axisY + BOTTOM_LEGEND_DASH_LENGTH / 2);
+                var x = parent.ChartStyleOptions.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
+                DrawingHelper.DrawLine(g, parent.ChartStyleOptions.AxisColor, x, axisY - BOTTOM_LEGEND_DASH_LENGTH / 2, x, axisY + BOTTOM_LEGEND_DASH_LENGTH / 2);
             }
         }
 
         public override void DrawYAxis(Graphics g)
         {
-            var axisX = g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - parent.ModulesBorderWidth;
-            var axisTopY = g.ClipBounds.Y + parent.ModulesBorderWidth;
-            var axisBottomY = g.ClipBounds.Y + Height - parent.ModulesBorderWidth - BOTTOM_LEGEND_WIDTH;
-            DrawingHelper.DrawLine(g, Pens.Purple, axisX, axisTopY, axisX, axisBottomY);
+            var font = new Font(parent.ChartStyleOptions.LabelsFont, parent.ChartStyleOptions.LabelsFontSize, FontStyle.Regular, GraphicsUnit.World);
+            var modulesBorderWidth = parent.ChartStyleOptions.ModulesBorderWidth;
+
+            var axisX = g.ClipBounds.Width - RIGHT_LEGEND_WIDTH - modulesBorderWidth;
+            var axisTopY = g.ClipBounds.Y + modulesBorderWidth;
+            var axisBottomY = g.ClipBounds.Y + Height - modulesBorderWidth - BOTTOM_LEGEND_WIDTH;
+            DrawingHelper.DrawLine(g, parent.ChartStyleOptions.AxisColor, axisX, axisTopY, axisX, axisBottomY);
 
             var max = parent.TickData.Ticks.Max(s => s.High);
             var min = parent.TickData.Ticks.Min(s => s.Low);
@@ -78,21 +81,20 @@ namespace TradeHub.Charts.Modules
             var nbSteps = range / priceSteps;
 
             // Draw divisions on the axis
-            var plotAreaTop = (int)g.ClipBounds.Y + parent.ModulesBorderWidth;
-            var plotAreaBottom = (int)g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - parent.ModulesBorderWidth;
+            var plotAreaTop = (int)g.ClipBounds.Y + modulesBorderWidth;
+            var plotAreaBottom = (int)g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - modulesBorderWidth;
             var currentPrice = Math.Round(max / priceSteps) * priceSteps;
             for (int i = 0; i < nbSteps; ++i)
             {
                 // Draw dash
                 var y = WorldToScreen( parent.TickData, currentPrice, plotAreaTop, plotAreaBottom);
-                DrawingHelper.DrawLine(g, Pens.BlueViolet, axisX - RIGHT_LEGEND_DASH_LENGTH, y, axisX + RIGHT_LEGEND_DASH_LENGTH, y);
+                DrawingHelper.DrawLine(g, parent.ChartStyleOptions.AxisColor, axisX - RIGHT_LEGEND_DASH_LENGTH, y, axisX + RIGHT_LEGEND_DASH_LENGTH, y);
 
                 // Draw label
-                var f = new Font("Arial", 14, FontStyle.Regular, GraphicsUnit.World);
-                var label = String.Format("{0:C}", currentPrice);
-                var strSize = g.MeasureString(label, f);
+                var label = string.Format("{0:C}", currentPrice);
+                var strSize = g.MeasureString(label, font);
                 var msgPos = new PointF(axisX + SPACE_BETWEEN_RIGHT_LEGEND_AND_LABEL, y - strSize.Height / 2 + 1);
-                DrawingHelper.DrawString(g, label, f, Brushes.Red, msgPos);
+                DrawingHelper.DrawString(g, label, font, parent.ChartStyleOptions.YAxisLabelsColor, msgPos);
 
                 currentPrice -= priceSteps;
             }
@@ -103,8 +105,10 @@ namespace TradeHub.Charts.Modules
         /// </summary>
         public override void DrawData(Graphics g)
         {
-            var plotAreaTop = (int)g.ClipBounds.Y + parent.ModulesBorderWidth;
-            var plotAreaBottom = (int)g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - parent.ModulesBorderWidth;
+            var modulesBorderWidth = parent.ChartStyleOptions.ModulesBorderWidth;
+
+            var plotAreaTop = (int)g.ClipBounds.Y + modulesBorderWidth;
+            var plotAreaBottom = (int)g.ClipBounds.Y + Height - BOTTOM_LEGEND_WIDTH - modulesBorderWidth;
             for (int i = 0; i < parent.TickData.Ticks.Count(); ++i)
             {
                 var tick = parent.TickData.Ticks.ElementAt(i);
@@ -114,9 +118,9 @@ namespace TradeHub.Charts.Modules
                 var yPosLow = WorldToScreen(parent.TickData, tick.Low, plotAreaTop, plotAreaBottom);
                 var yPosClose = WorldToScreen(parent.TickData, tick.Close, plotAreaTop, plotAreaBottom);
 
-                var x = parent.ModulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
-                DrawingHelper.DrawLine(g, Pens.Black, x, yPosHigh, x, yPosLow);
-                DrawingHelper.DrawLine(g, Pens.Black, x, yPosClose, x + 2, yPosClose);
+                var x = modulesBorderWidth + i * spaceBetweenDivX + spaceBetweenDivX / 2;
+                DrawingHelper.DrawLine(g, parent.ChartStyleOptions.DataColor, x, yPosHigh, x, yPosLow);
+                DrawingHelper.DrawLine(g, parent.ChartStyleOptions.DataColor, x, yPosClose, x + 2, yPosClose);
 
                 if (parent.TransactionHistory != null)
                 {

@@ -47,37 +47,19 @@ namespace TradeHub.Charts
         public int Height
         {
             // The "- SPACE_BETWEEN_CHART_MODULES" is because the first module doesn't have a top margin.
-            get { return Modules.Sum(module => (module.Height + SPACE_BETWEEN_CHART_MODULES)) - SPACE_BETWEEN_CHART_MODULES; }
+            get { return Modules.Sum(module => module.Height + SPACE_BETWEEN_CHART_MODULES) - SPACE_BETWEEN_CHART_MODULES; }
         }
         #endregion
 
-        #region Background
-
         /// <summary>
-        /// The background color of the chart.
+        /// The visual style options of the chart.
         /// </summary>
-        public Color BackgroundColor = Color.Transparent;
-        #endregion
+        public ChartStyleOptions ChartStyleOptions { get; set; } = new ChartStyleOptions();
 
-        #region Border
-        /// <summary>
-        /// The border color surrounding each module. Set to null for no border.
-        /// </summary>
-        public Pen ModulesBorderColor = Pens.Black;
-
-        /// <summary>
-        /// The border width for each module border.
-        /// </summary>
-        public int ModulesBorderWidth = 1;
-        #endregion
-
-        #region Modules
         /// <summary>
         /// List of the chart modules (components) composing this chart.
         /// </summary>
         public List<StaticChartModule> Modules { get; set; }
-
-        #endregion
 
         public StaticChart()
         {
@@ -97,7 +79,7 @@ namespace TradeHub.Charts
             DrawingHelper.BitmapToDebug = bitmap;
             var g = Graphics.FromImage(bitmap);
             g.SetClip(new Rectangle(0, 0, Width, Height));
-            g.Clear(BackgroundColor);
+            g.Clear(ChartStyleOptions.BackgroundColor);
 
             // Keep track of the height of modules to set each one's drawing area.
             var drawingArea = new Rectangle();

@@ -4,6 +4,7 @@ using System.Linq;
 using TradeHub.Charts.GDI;
 using TradeHub.Charts.Interfaces;
 using TradeHub.Charts.Modules;
+using TradeHub.Core.Math;
 
 namespace TradeHub.Charts.Overlays
 {
@@ -66,15 +67,15 @@ namespace TradeHub.Charts.Overlays
 
             var pen = new Pen(Color, Thickness);
 
-            // TODO: improve this method (uses too much of parent)
+            var chartStyleOptions = _parentModule.parent.ChartStyleOptions;
 
-            var plotAreaTop = (int)g.ClipBounds.Y + _parentModule.parent.ModulesBorderWidth;
-            var plotAreaBottom = (int)g.ClipBounds.Y + _parentModule.Height - 20/*BOTTOM_LEGEND_WIDTH*/ - _parentModule.parent.ModulesBorderWidth;
+            var plotAreaTop = (int)g.ClipBounds.Y + chartStyleOptions.ModulesBorderWidth;
+            var plotAreaBottom = (int)g.ClipBounds.Y + _parentModule.Height - StaticChartModule.BOTTOM_LEGEND_WIDTH - chartStyleOptions.ModulesBorderWidth;
 
             var valuesCount = ToIndex - FromIndex + 1;
 
-            var x1 = _parentModule.parent.ModulesBorderWidth + FromIndex * _parentModule.spaceBetweenDivX + _parentModule.spaceBetweenDivX / 2;
-            var x2 = _parentModule.parent.ModulesBorderWidth + ToIndex * _parentModule.spaceBetweenDivX + _parentModule.spaceBetweenDivX / 2;
+            var x1 = chartStyleOptions.ModulesBorderWidth + FromIndex * _parentModule.spaceBetweenDivX + _parentModule.spaceBetweenDivX / 2;
+            var x2 = chartStyleOptions.ModulesBorderWidth + ToIndex * _parentModule.spaceBetweenDivX + _parentModule.spaceBetweenDivX / 2;
             var y1 = _parentModule.WorldToScreen(_parentModule.parent.TickData, _intercept, plotAreaTop, plotAreaBottom);
             var y2 = _parentModule.WorldToScreen(_parentModule.parent.TickData, _intercept + _slope * valuesCount, plotAreaTop, plotAreaBottom);
             DrawingHelper.DrawLine(g, pen, x1, y1, x2, y2); // TODO: handle ExtendLine
@@ -97,42 +98,7 @@ namespace TradeHub.Charts.Overlays
             var xValues = indexedTicks.Select(x => (decimal)x.index).ToArray();
             var yValues = indexedTicks.Select(x => x.Close).ToArray();
 
-            LinearRegression(xValues, yValues, 0, xValues.Length, out _intercept, out _slope);
-        }
-
-        /// <remarks>
-        /// https://stackoverflow.com/questions/15623129/simple-linear-regression-for-data-set
-        /// </remarks>
-        private static void LinearRegression(decimal[] xVals, decimal[] yVals,
-                                        int inclusiveStart, int exclusiveEnd,
-                                        out decimal yintercept, out decimal slope)
-        {
-            decimal sumOfX = 0;
-            decimal sumOfY = 0;
-            decimal sumOfXSq = 0;
-            decimal sumOfYSq = 0;
-            decimal ssX = 0;
-            decimal sumCodeviates = 0;
-            decimal sCo = 0;
-            decimal count = exclusiveEnd - inclusiveStart;
-
-            for (int ctr = inclusiveStart; ctr < exclusiveEnd; ctr++)
-            {
-                var x = xVals[ctr];
-                var y = yVals[ctr];
-                sumCodeviates += x * y;
-                sumOfX += x;
-                sumOfY += y;
-                sumOfXSq += x * x;
-                sumOfYSq += y * y;
-            }
-            ssX = sumOfXSq - ((sumOfX * sumOfX) / count);
-            sCo = sumCodeviates - ((sumOfX * sumOfY) / count);
-
-            var meanX = sumOfX / count;
-            var meanY = sumOfY / count;
-            yintercept = meanY - ((sCo / ssX) * meanX);
-            slope = sCo / ssX;
+            MathHelper.LinearRegression(xValues, yValues, 0, xValues.Length, out _intercept, out _slope);
         }
     }
 }

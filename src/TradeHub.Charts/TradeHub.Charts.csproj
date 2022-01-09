@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\TradeHub.Core.Math\TradeHub.Core.Math.csproj" />
     <ProjectReference Include="..\TradeHub.Core.Model\TradeHub.Core.Model.csproj" />
   </ItemGroup>
 

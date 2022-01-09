@@ -19,7 +19,7 @@ namespace TradeHub.Charts.Modules
         /// </summary>
         public const bool ROUND_SPACE_BETWEEN_DIV_X = false;
 
-        public const int RIGHT_LEGEND_WIDTH = 60;
+        public const int RIGHT_LEGEND_WIDTH = 62; // TODO: this should be calculated based on the longest price to display
         public const int RIGHT_LEGEND_DASH_LENGTH = 4;
         public const int BOTTOM_LEGEND_WIDTH = 20;
         public const int BOTTOM_LEGEND_DASH_LENGTH = 4;
@@ -65,12 +65,12 @@ namespace TradeHub.Charts.Modules
 
         public void DrawBorder(Graphics g)
         {
-            if (parent.ModulesBorderWidth == 0)
+            if (parent.ChartStyleOptions.ModulesBorderWidth == 0)
             {
                 return;
             }
 
-            DrawingHelper.DrawRectangle(g, parent.ModulesBorderColor, g.ClipBounds.X, g.ClipBounds.Y, g.ClipBounds.Width - 1, g.ClipBounds.Y + Height - 1);
+            DrawingHelper.DrawRectangle(g, parent.ChartStyleOptions.ModulesBorderColor, g.ClipBounds.X, g.ClipBounds.Y, g.ClipBounds.Width - 1, g.ClipBounds.Y + Height - 1);
         }
 
         public virtual void DrawXAxis(Graphics g)
